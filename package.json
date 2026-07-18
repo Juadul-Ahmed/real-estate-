@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "server:install": "npm --prefix server install",
+    "server:dev": "npm --prefix server run dev",
+    "server:seed": "npm --prefix server run seed"
   },
   "dependencies": {
     "next": "16.2.10",
