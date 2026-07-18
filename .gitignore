@@ -2,4 +2,8 @@
 .next/
 .vercel/
 *.log
-env.local
+.env
+.env.*
+server/.env
+server/dist/
+.claude/

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
-import { useAuth } from "@/lib/auth-context";
 
 const SUGGESTIONS = [
   "How do I list a property?",
@@ -12,26 +11,20 @@ const SUGGESTIONS = [
 ];
 
 export function AIChatWidget() {
-  const { user } = useAuth();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<{ role: string; text: string }[]>([]);
+  const [sessionId] = useState(() => typeof window !== "undefined" ? `sess_${Date.now()}_${Math.random().toString(36).slice(2, 9)}` : "");
+  const [messages, setMessages] = useState<{ role: string; text: string }[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem(`chat_${sessionId}`);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sessionId] = useState(() => typeof window !== "undefined" ? `sess_${Date.now()}_${Math.random().toString(36).slice(2, 9)}` : "");
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const saved = localStorage.getItem(`chat_${sessionId}`);
-    if (saved) {
-      try {
-        setMessages(JSON.parse(saved));
-      } catch {
-        // ignore
-      }
-    }
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [open, sessionId]);
 
   useEffect(() => {
     if (open) localStorage.setItem(`chat_${sessionId}`, JSON.stringify(messages));

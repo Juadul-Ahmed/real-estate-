@@ -59,7 +59,7 @@ export interface PaginatedProperties {
   totalPages: number;
 }
 
-interface AnalyticsData {
+export interface AnalyticsData {
   users: number; buyers: number; brokers: number; admins: number;
   properties: number; approved: number; pending: number; rejected: number;
   inquiries: number; messages: number;

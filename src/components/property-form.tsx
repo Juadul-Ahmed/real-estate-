@@ -75,9 +75,9 @@ export function PropertyForm({ initial, onDone }: { initial?: Property; onDone: 
       onDone();
     } catch (err) {
       if (err instanceof ApiError && err.errors) {
-        const flat = err.errors as any;
-        const msgs = flat?.fieldErrors || flat?.formErrors || [];
-        setError(Array.isArray(msgs) ? msgs.join(", ") : "Validation failed");
+        const flat = err.errors as Record<string, unknown> | undefined;
+        const msgs = (flat?.fieldErrors || flat?.formErrors || []) as unknown[];
+        setError(Array.isArray(msgs) ? (msgs as string[]).join(", ") : "Validation failed");
       } else {
         setError(err instanceof Error ? err.message : "Save failed");
       }

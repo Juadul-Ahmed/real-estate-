@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { Navbar } from "@/components/navbar";
 import { AIChatWidget } from "@/components/ai-chat-widget";
+import { Footer } from "@/components/footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,9 +37,7 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
-          <footer className="bg-surface text-muted text-center py-8 text-sm border-t border-border">
-            EstateHub © {new Date().getFullYear()} — Real Estate Platform
-          </footer>
+          <Footer />
           <AIChatWidget />
         </AuthProvider>
       </body>

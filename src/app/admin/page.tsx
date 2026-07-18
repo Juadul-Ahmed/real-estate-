@@ -38,12 +38,6 @@ function AdminHome() {
   );
 }
 
-interface AnalyticsData {
-  users: number; buyers: number; brokers: number; admins: number;
-  properties: number; approved: number; pending: number; rejected: number;
-  inquiries: number; messages: number;
-}
-
 interface AdminProperty {
   _id: string;
   title: string;

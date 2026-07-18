@@ -185,7 +185,7 @@ export default function HomePage() {
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((t) => (
             <div key={t.n} className="bg-surface border border-border rounded-xl p-8 card-hover">
-              <p className="text-title text-sm mb-6 leading-relaxed">"{t.q}"</p>
+              <p className="text-title text-sm mb-6 leading-relaxed">{"{t.q}"}</p>
               <div>
                 <p className="font-semibold text-title">{t.n}</p>
                 <p className="text-xs text-muted tracking-wide uppercase">{t.r}</p>

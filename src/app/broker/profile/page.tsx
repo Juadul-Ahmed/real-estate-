@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { api, ApiError } from "@/lib/api";
 import { RoleGuard } from "@/lib/role-guard";
@@ -12,11 +12,13 @@ function BrokerProfile() {
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      setForm({ name: user.name || "", phone: user.phone || "", bio: user.bio || "" });
-    }
-  }, [user]);
+  const initForm = (u: typeof user) => {
+    if (u) setForm({ name: u.name || "", phone: u.phone || "", bio: u.bio || "" });
+  };
+
+  if (user && (form.name !== user.name || form.phone !== (user.phone || "") || form.bio !== (user.bio || ""))) {
+    initForm(user);
+  }
 
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -59,7 +61,7 @@ function BrokerProfile() {
 
       {user && !user.brokerApproved && (
         <div className="mb-6 bg-warning/10 border border-warning/20 rounded-xl px-6 py-4 text-sm text-warning">
-          Your broker account is pending admin approval. Your listings will show as "pending" until approved.
+          Your broker account is pending admin approval. Your listings will show as {'"pending"'} until approved.
         </div>
       )}
 
