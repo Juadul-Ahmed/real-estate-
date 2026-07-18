@@ -125,10 +125,7 @@ NODE_ENV=development
 npm run server:seed
 ```
 
-This creates:
-- **Admin** — `admin@realestate.com` / `admin123`
-- **Broker** — `broker@realestate.com` / `broker123`
-- **Buyer** — `buyer@realestate.com` / `buyer123`
+
 
 ### 5. Run the development servers
 
@@ -212,6 +209,3 @@ npm run dev
 
 ---
 
-## License
-
-ISC
