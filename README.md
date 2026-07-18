@@ -1,36 +1,217 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EstateHub — Real Estate Platform
+
+A full-stack real estate web application with role-based access for **buyers**, **brokers**, and **admins**. Browse listings, manage properties, send inquiries, and track analytics — all in one place.
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8)
+![Express](https://img.shields.io/badge/Express-4-green)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-green)
+
+---
+
+## Features
+
+### Buyer
+- Browse approved listings with search & filters
+- Save favorite properties
+- Send inquiries to brokers
+- Track inquiry history
+
+### Broker
+- Dashboard with listing & inquiry stats
+- Create, edit, and delete property listings
+- Manage inquiries and messages
+- Edit public profile (name, phone, bio)
+
+### Admin
+- Manage users (buyers & brokers)
+- Approve or reject broker accounts
+- Review and approve/reject property listings
+- Moderate content (delete listings/users)
+- View site analytics dashboard
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16 (App Router), React 19, TypeScript |
+| Styling | Tailwind CSS v4 |
+| Backend | Express.js, TypeScript |
+| Database | MongoDB (Mongoose) |
+| Auth | JWT (email/password), role-based guards |
+| Validation | Zod (API), React (client) |
+
+---
+
+## Project Structure
+
+```
+real-estate/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx              # Home / landing page
+│   │   ├── listings/             # Browse & search listings
+│   │   ├── listings/[id]/        # Listing detail
+│   │   ├── login/                # Sign in
+│   │   ├── register/             # Sign up
+│   │   ├── buyer/                # Buyer dashboard
+│   │   ├── broker/               # Broker dashboard, listings, profile, inquiries
+│   │   └── admin/                # Admin console (users, approvals, analytics)
+│   ├── components/               # Shared UI components
+│   ├── lib/                      # API client, auth context, types, guards
+│   └── globals.css               # Tailwind + theme + animations
+├── server/
+│   ├── src/
+│   │   ├── index.ts              # Express entry point
+│   │   ├── models/               # Mongoose models (User, Property, Inquiry, Message)
+│   │   ├── routes/               # Auth, properties, inquiries, admin routes
+│   │   ├── controllers/          # Request handlers
+│   │   ├── middleware/           # Auth, role guards, validation
+│   │   └── validators/           # Zod schemas
+│   ├── .env.example
+│   └── package.json
+├── .env.example
+├── next.config.ts
+├── tailwind.config.ts
+└── package.json
+```
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js >= 18
+- MongoDB (local or Atlas)
+- npm or pnpm
+
+### 1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Juadul-Ahmed/real-estate-.git
+cd real-estate
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run server:install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Configure environment variables
 
-## Learn More
+Create `.env` in the root:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
+```
 
-To learn more about Next.js, take a look at the following resources:
+Create `server/.env`:
+```env
+PORT=4000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+CLIENT_ORIGIN=http://localhost:3000
+NODE_ENV=development
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Seed the database (optional)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run server:seed
+```
 
-## Deploy on Vercel
+This creates:
+- **Admin** — `admin@realestate.com` / `admin123`
+- **Broker** — `broker@realestate.com` / `broker123`
+- **Buyer** — `buyer@realestate.com` / `buyer123`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Run the development servers
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+In one terminal:
+```bash
+npm run server:dev
+```
+
+In another terminal:
+```bash
+npm run dev
+```
+
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:4000`
+
+---
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Next.js frontend dev server |
+| `npm run build` | Build frontend for production |
+| `npm run lint` | Run ESLint |
+| `npm run server:dev` | Start Express backend with ts-node-dev |
+| `npm run server:seed` | Seed database with sample data |
+| `npm run server:build` | Compile backend TypeScript |
+| `npm run server:start` | Start compiled backend |
+
+---
+
+## API Endpoints
+
+### Auth
+- `POST /api/auth/register` — Register user
+- `POST /api/auth/login` — Login, returns JWT
+- `GET /api/auth/me` — Get current user
+- `PUT /api/auth/profile` — Update profile
+
+### Properties
+- `GET /api/properties` — List properties (with filters)
+- `GET /api/properties/:id` — Get single property
+- `POST /api/properties` — Create listing (broker)
+- `PUT /api/properties/:id` — Update listing (broker/admin)
+- `DELETE /api/properties/:id` — Delete listing
+
+### Inquiries
+- `POST /api/inquiries` — Create inquiry
+- `GET /api/inquiries` — List inquiries
+- `POST /api/inquiries/:id/messages` — Send message
+
+### Admin
+- `GET /api/admin/analytics` — Site analytics
+- `GET /api/admin/users` — List users
+- `PUT /api/admin/users/:id` — Update user
+- `DELETE /api/admin/users/:id` — Delete user
+- `GET /api/admin/properties/pending` — Pending listings
+- `PUT /api/admin/properties/:id/status` — Approve/reject listing
+- `DELETE /api/admin/properties/:id` — Delete any listing
+
+---
+
+## Role-Based Access
+
+| Role | Access |
+|------|--------|
+| **Buyer** | Browse listings, save favorites, send inquiries |
+| **Broker** | Buyer features + manage listings, inquiries, profile |
+| **Admin** | Full access — user management, approvals, moderation, analytics |
+
+---
+
+## Design Decisions
+
+- **Separate backend**: Express + TypeScript runs independently on port 4000, making the API reusable for mobile or other clients.
+- **JWT auth**: Role is embedded in the token; both frontend and backend enforce access control.
+- **Broker approval flow**: Brokers register with `brokerApproved=false`; admins must approve before listings go live.
+- **Tailwind v4**: Uses CSS-based theme tokens for consistent colors, fonts, and spacing.
+- **Next.js 16**: Built with the latest App Router conventions.
+
+---
+
+## License
+
+ISC
